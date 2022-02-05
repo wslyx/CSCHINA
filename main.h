@@ -4,13 +4,12 @@
       Author:  Allen Sherrod
      Chapter:  Chapter 2
 */
+#include"RealEngine/engine.h"
 
+#pragma comment(lib, "RealEngine.lib")
 
 #ifndef _MAIN_H_
 #define _MAIN_H_
-
-
-#pragma comment(lib, "RealEngine.lib")
 
 #define WINDOW_CLASS    L"CS::CHINA"
 #define WINDOW_NAME     L"CS::CHINA"

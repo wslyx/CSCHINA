@@ -4,6 +4,9 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{a513bb32-c9eb-47ba-8981-2500cc9665c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="General">
+      <UniqueIdentifier>{06bab1fa-6605-40d3-bcab-cf1f1d2f7a3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -13,6 +16,12 @@
   <ItemGroup>
     <ClInclude Include="Renderer.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="engine.h">
+      <Filter>General</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

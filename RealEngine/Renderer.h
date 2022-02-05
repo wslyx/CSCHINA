@@ -5,17 +5,61 @@
 #include<d3d9.h>
 #include<d3dx9.h>
 #include<Windows.h>
+#include"defines.h"
 
-class Renderer
+class RenderInterface
+{
+public:
+    RenderInterface() : ScreenWidth(0), ScreenHeight(0), Near(0), Far(0), MainWindow(NULL), FullScreen(0), ClearColor(NULL), Direct3DObject(NULL), Direct3DDevice(NULL){ }
+    virtual ~RenderInterface() {}
+
+    virtual bool Initialize(int w, int h, HWND mainWin, bool fullScreen) = 0;
+    virtual void OneTimeInit() = 0;
+    virtual void Shutdown() = 0;
+    virtual void SetClearCol(float r, float g, float b) = 0;
+    virtual void StartRender(bool bColor, bool bDepth, bool bStencil) = 0;
+    virtual void ClearBuffers(bool bColor, bool bDepth, bool bStencil) = 0;
+    virtual void EndRendering() = 0;
+    virtual void CalculateProjMatrix(float fov, float n, float f) = 0;
+    virtual void CalculateOrthoMatrix(float n, float f) = 0;
+    virtual int CreateStaticBuffer(VertexType, PrimType, int totalVerts, int totalIndices, int stride, void** data, unsigned int* indices, int* staticId) = 0;
+    virtual int Render(int staticId) = 0;
+
+protected:
+    int ScreenWidth;
+    int ScreenHeight;
+    HWND MainWindow;//主窗口句柄
+    bool FullScreen;//是否全屏
+    D3DCOLOR ClearColor;//清屏颜色
+    LPDIRECT3D9 Direct3DObject;//D3D对象
+    LPDIRECT3DDEVICE9 Direct3DDevice;//D3D设备
+
+    float Near;
+    float Far;
+};
+
+class Renderer : public RenderInterface
 {
 private:
-	D3DCOLOR ClearColor;//清屏颜色
-	HWND MainWindow;//主窗口句柄
-	bool FullScreen;//是否全屏
-	LPDIRECT3D9 Direct3DObject;//D3D对象
-	LPDIRECT3DDEVICE9 Direct3DDevice;//D3D设备
+	
 public:
 	Renderer();
 	~Renderer();
-	bool Initialize(int w, int h, HWND mainWin, bool fullScreen);//填充窗口数据，并获得设备参数
+
+    void OneTimeInit();
+	bool Initialize(int w, int h, HWND mainWin, bool fullScreen); //填充窗口数据，并获得设备参数
+
+    void Shutdown();
+
+    void SetClearCol(float r, float g, float b);
+    void StartRender(bool bColor, bool bDepth, bool bStencil);
+    void ClearBuffers(bool bColor, bool bDepth, bool bStencil);
+    void EndRendering();
+
+    void CalculateProjMatrix(float fov, float n, float f);
+    void CalculateOrthoMatrix(float n, float f);
+
+    int CreateStaticBuffer(VertexType, PrimType, int totalVerts, int totalIndices, int stride, void** data, unsigned int* indices, int* staticId);
+
+    int Render(int staticId);
 };

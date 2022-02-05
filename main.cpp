@@ -10,6 +10,7 @@
 
 // Globals...
 HWND g_hwnd;
+Renderer* g_Render;
 
 
 LRESULT WINAPI MsgProc(HWND hd, UINT msg, WPARAM wp, LPARAM lp)
@@ -118,7 +119,8 @@ INT WINAPI WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In
 
 bool InitializeEngine()
 {
-    if (!CreateD3DRenderer(&g_Render)) return false;
+    g_Render = new Renderer();
+    if (g_Render==NULL) return false;
 
     if (!g_Render->Initialize(WIN_WIDTH, WIN_HEIGHT, g_hwnd, FULLSCREEN)) return false;
 
