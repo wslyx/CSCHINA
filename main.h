@@ -13,9 +13,14 @@
 
 #define WINDOW_CLASS    L"CS::CHINA"
 #define WINDOW_NAME     L"CS::CHINA"
-#define WIN_WIDTH       2560
-#define WIN_HEIGHT      1080
+#define WIN_WIDTH       640
+#define WIN_HEIGHT      320
 #define FULLSCREEN      0
 
+bool InitializeEngine();
+void ShutdownEngine();
+bool GameInitialize();
+void GameLoop();
+void GameShutdown();
 
 #endif

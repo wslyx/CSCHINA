@@ -1,11 +1,12 @@
 #pragma once
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
-
 #include<d3d9.h>
 #include<d3dx9.h>
 #include<Windows.h>
 #include"defines.h"
+#include"Control.h"
+#include"Renderer.h"
 
 class RenderInterface
 {
@@ -16,9 +17,9 @@ public:
     virtual bool Initialize(int w, int h, HWND mainWin, bool fullScreen) = 0;
     virtual void OneTimeInit() = 0;
     virtual void Shutdown() = 0;
-    virtual void SetClearCol(float r, float g, float b) = 0;
+    virtual void SetClearColor(float r, float g, float b) = 0;
     virtual void StartRender(bool bColor, bool bDepth, bool bStencil) = 0;
-    virtual void ClearBuffers(bool bColor, bool bDepth, bool bStencil) = 0;
+    virtual void SetClearFlags(bool bColor, bool bDepth, bool bStencil) = 0;
     virtual void EndRendering() = 0;
     virtual void CalculateProjMatrix(float fov, float n, float f) = 0;
     virtual void CalculateOrthoMatrix(float n, float f) = 0;
@@ -41,6 +42,9 @@ protected:
 class Renderer : public RenderInterface
 {
 private:
+    bool IsRenderedScene;
+    LPD3DXFONT g_pTextUI = NULL;
+    ControlManager *g_pManager;
 	
 public:
 	Renderer();
@@ -51,9 +55,9 @@ public:
 
     void Shutdown();
 
-    void SetClearCol(float r, float g, float b);
+    void SetClearColor(float r, float g, float b);
     void StartRender(bool bColor, bool bDepth, bool bStencil);
-    void ClearBuffers(bool bColor, bool bDepth, bool bStencil);
+    void SetClearFlags(bool bColor, bool bDepth, bool bStencil);
     void EndRendering();
 
     void CalculateProjMatrix(float fov, float n, float f);

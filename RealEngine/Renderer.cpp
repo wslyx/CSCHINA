@@ -7,6 +7,8 @@ Renderer::Renderer()
 	FullScreen = false;
 	Direct3DObject = NULL;
 	Direct3DDevice = NULL;
+	IsRenderedScene = 0;
+	g_pManager = NULL;
 }
 
 Renderer::~Renderer()
@@ -62,26 +64,30 @@ bool Renderer::Initialize(int w, int h, HWND mainWin, bool fullScreen)
 	ScreenWidth = w;
 	ScreenHeight = h;
 
-	if (FAILED(Direct3DObject->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, MainWindow, processing, &Params, &Direct3DDevice))) return false;
+	if (FAILED(Direct3DObject->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, MainWindow, processing, &Params, &Direct3DDevice)))
+		return false;
 
-	if (Direct3DDevice == NULL) return false;
+	if (Direct3DDevice == NULL)
+		return false;
 
 	OneTimeInit();
 
-	return false;
+	return true;
 }
 
 void Renderer::OneTimeInit()
 {
+	g_pManager = new ControlManager(MainWindow, Direct3DDevice);
 }
 
-void Renderer::SetClearCol(float r, float g, float b)
+void Renderer::SetClearColor(float r, float g, float b)
 {
 	ClearColor = D3DCOLOR_COLORVALUE(r, g, b, 1.0f);
 }
 
 int Renderer::Render(int staticId)
 {
+	g_pManager->ControlRender();
 	return 0;
 }
 
@@ -91,14 +97,33 @@ void Renderer::Shutdown()
 
 void Renderer::StartRender(bool bColor, bool bDepth, bool bStencil)
 {
+	if (!Direct3DDevice) return;
+
+	unsigned int ClearFlags = 0;
+	if (bColor) ClearFlags |= D3DCLEAR_TARGET;
+	if (bDepth) ClearFlags |= D3DCLEAR_ZBUFFER;
+	if (bStencil) ClearFlags |= D3DCLEAR_STENCIL;
+
+	if (FAILED(Direct3DDevice->Clear(0, NULL, ClearFlags, ClearColor, 1, 0))) return;
+	if (FAILED(Direct3DDevice->BeginScene())) return;
+
+	Render(0);
+
+	IsRenderedScene = true;//用于EndRendering()判断是否结束渲染
 }
 
-void Renderer::ClearBuffers(bool bColor, bool bDepth, bool bStencil)
+void Renderer::SetClearFlags(bool bColor, bool bDepth, bool bStencil)
 {
 }
 
 void Renderer::EndRendering()
 {
+	if (!Direct3DDevice) return;
+
+	Direct3DDevice->EndScene();
+	Direct3DDevice->Present(NULL, NULL, NULL, NULL);
+
+	IsRenderedScene = false;
 }
 
 void Renderer::CalculateProjMatrix(float fov, float n, float f)

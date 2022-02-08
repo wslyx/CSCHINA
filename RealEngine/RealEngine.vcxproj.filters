@@ -7,10 +7,16 @@
     <Filter Include="General">
       <UniqueIdentifier>{06bab1fa-6605-40d3-bcab-cf1f1d2f7a3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Control">
+      <UniqueIdentifier>{e2fdd21d-5509-498d-9975-c123bf950a7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Control.cpp">
+      <Filter>Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -22,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="engine.h">
       <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Control.h">
+      <Filter>Control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

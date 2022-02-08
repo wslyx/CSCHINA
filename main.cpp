@@ -23,7 +23,8 @@ LRESULT WINAPI MsgProc(HWND hd, UINT msg, WPARAM wp, LPARAM lp)
         break;
 
     case WM_KEYUP:
-        if (wp == VK_ESCAPE) PostQuitMessage(0);
+        if (wp == VK_ESCAPE)
+            PostQuitMessage(0);
         break;
     }
 
@@ -57,7 +58,7 @@ INT WINAPI WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In
         return 0;
     }
 
-    g_hwnd = CreateWindow(L"StrendedGame",
+    g_hwnd = CreateWindow(L"CS::CHINA",
         WINDOW_NAME,
         WS_POPUP|WS_EX_TOPMOST,
         CW_USEDEFAULT, CW_USEDEFAULT, WIN_WIDTH, WIN_HEIGHT,
@@ -124,7 +125,7 @@ bool InitializeEngine()
 
     if (!g_Render->Initialize(WIN_WIDTH, WIN_HEIGHT, g_hwnd, FULLSCREEN)) return false;
 
-    g_Render->SetClearCol(0, 100, 0);
+    g_Render->SetClearColor(0, 100, 0);
 
     return true;
 }
